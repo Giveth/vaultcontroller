@@ -399,7 +399,16 @@ contract VaultController is Owned {
         parentVaultController.topUpVault();
         sendBackOverflow();
 
-        VaultsLimitChanged();
+        VaultsLimitChanged(
+            _dailyAmountLimit,
+            _dailyTxnLimit,
+            _txnAmountLimit,
+            _openingTime,
+            _closingTime,
+            _whiteListTimelock,
+            _highestAcceptableBalance,
+            _lowestAcceptableBalance
+        );
     }
 
     uint public test1; // for testing
@@ -761,7 +770,16 @@ contract VaultController is Owned {
     event VaultCanceled(address indexed canceler);
     event TopUpVault(uint indexed vaultControllerId, uint amount);
 
-    event VaultsLimitChanged();
+    event VaultsLimitChanged(
+        uint dailyAmountLimit,
+        uint dailyTxnLimit,
+        uint txnAmountLimit,
+        uint openingTime,
+        uint closingTime,
+        uint whiteListTimelock,
+        uint highestAcceptableBalance,
+        uint lowestAcceptableBalance
+    );
 }
 
 
