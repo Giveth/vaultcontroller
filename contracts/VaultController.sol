@@ -53,7 +53,7 @@ contract VaultController is Owned {
 
 
     VaultController public parentVaultController; // Controller of the Vault that feeds this Vault (if there is one)
-    address public parentVault;                   // Address that feeds this Vault, and recieves money when this Vault overflows 
+    address public parentVault;                   // Address that feeds this Vault, and recieves money when this Vault overflows
     Vault public primaryVault;     // Vault that is funding all the childVaults
 
     VaultFactory public vaultFactory;  // the contract that is used to create vaults
@@ -442,7 +442,9 @@ contract VaultController is Owned {
     /// @notice A `childVaultController` calls this function to reduce their
     ///  Vault's Balance to the `highestAcceptableBalance`
     function sendBackOverflow() {
-        if (primaryVault.getBalance() > highestAcceptableBalance) {
+        if (  (primaryVault.getBalance() > highestAcceptableBalance)
+            &&(parentVault != 0))
+        {
             primaryVault.authorizePayment(
               "VAULT OVERFLOW",
               bytes32(0),
