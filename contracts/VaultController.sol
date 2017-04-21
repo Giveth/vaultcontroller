@@ -440,7 +440,9 @@ contract VaultController is Owned {
 
 
     /// @notice A `childVaultController` calls this function to reduce their
-    ///  Vault's Balance to the `highestAcceptableBalance`
+    ///  Vault's Balance to the `highestAcceptableBalance`.
+    ///  If anybody tops the vault with Ether that spills over, this function
+    ///  can be called to transfer the spilled over part to the main vault.
     function sendBackOverflow() {
         if (primaryVault.getBalance() > highestAcceptableBalance) {
             primaryVault.authorizePayment(
