@@ -570,7 +570,7 @@ contract VaultController is Owned {
         if (idSpender == 0) throw;
         idSpender--;
 
-        addr2spenderId[msg.sender] = 0;
+        addr2spenderId[_spender] = 0;
         spenders[idSpender].active = false;
 
         SpenderRemoved(idSpender, _spender);
