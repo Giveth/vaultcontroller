@@ -405,8 +405,10 @@ contract VaultController is Owned {
         highestAcceptableBalance = _highestAcceptableBalance;
         lowestAcceptableBalance = _lowestAcceptableBalance;
 
-        parentVaultController.topUpVault();
-        sendBackOverflow();
+        if (address(parentVaultController) != 0) {
+            parentVaultController.topUpVault();
+            sendBackOverflow();
+        }
 
         VaultsLimitChanged(
             _dailyAmountLimit,
