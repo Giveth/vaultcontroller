@@ -652,7 +652,7 @@ contract VaultController is Owned {
     ///  called every time the primaryVault sends `baseTokens`
     function checkMainTransfer(address _recipient, uint _amount) internal returns (bool) {
         uint actualDay = now / 86400;       //Number of days since Jan 1, 1970 (UTC Timezone) fractional remainder discarded
-        uint actualTime = now % actualDay;  //Number of seconds since midnight (UTC Timezone)
+        uint actualTime = now % 86400;  //Number of seconds since midnight (UTC Timezone)
 
         if (actualTime < openingTime) actualDay--; // adjusts day to start at `mainopeningTime`
 
@@ -688,7 +688,7 @@ contract VaultController is Owned {
     ///  called every time the primaryVault sends `baseTokens`
     function checkSpenderTransfer(Spender storage spender, address _recipient, uint _amount) internal returns (bool) {
         uint actualDay = now / 86400;       //Number of days since Jan 1, 1970 (UTC Timezone) fractional remainder discarded
-        uint actualTime = now % actualDay;  //Number of seconds since midnight (UTC Timezone)
+        uint actualTime = now % 86400;  //Number of seconds since midnight (UTC Timezone)
 
         if (actualTime < spender.openingTime) actualDay--; // adjusts day to start at `mainopeningTime`
 
