@@ -184,6 +184,8 @@ contract VaultController is Owned {
 
         if (_highestAcceptableBalance < _lowestAcceptableBalance) throw;
         if (_txnAmountLimit > _dailyAmountLimit) throw;
+        if (_openingTime >= 86400) throw;
+        if (_closingTime > 86400) throw;
 
         dailyAmountLimit = _dailyAmountLimit;
         dailyTxnLimit = _dailyTxnLimit;
@@ -395,6 +397,9 @@ contract VaultController is Owned {
         uint _lowestAcceptableBalance
     ) onlyParentOrOwnerIfNoParent initialized notCanceled {
         if (_lowestAcceptableBalance > _highestAcceptableBalance) throw;
+        if (_txnAmountLimit > _dailyAmountLimit) throw;
+        if (_openingTime >= 86400) throw;
+        if (_closingTime > 86400) throw;
 
         dailyAmountLimit = _dailyAmountLimit;
         dailyTxnLimit = _dailyTxnLimit;
