@@ -534,7 +534,14 @@ contract VaultController is Owned {
         uint _openingTime,
         uint _closingTime
     ) onlyOwner initialized notCanceled {
-        uint idSpender = spenders.length ++;
+
+        uint idSpender = addr2spenderId[_addr];
+
+        if (idSpender == 0) {
+            idSpender = spenders.length ++;
+        } else {
+            idSpender--;
+        }
         Spender s = spenders[idSpender];
 
         if (_dailyAmountLimit > dailyAmountLimit) throw;
@@ -589,11 +596,22 @@ contract VaultController is Owned {
 
         if (s.addr2recipientId[_recipient]>0) return; // already authorized
 
-        uint idRecipient = s.recipients.length ++;
 
-        s.recipients[idRecipient].name = _name;
-        s.recipients[idRecipient].addr = _recipient;
-        s.recipients[idRecipient].activationTime = now + whiteListTimelock;
+        uint idRecipient = s.addr2recipientId[_recipient];
+
+        if (idRecipient == 0) {
+            idRecipient = s.recipients.length ++;
+        } else {
+           idRecipient --;
+        }
+
+        Recipient r = s.recipients[idRecipient];
+
+        r.name = _name;
+        r.addr = _recipient;
+        if (r.activationTime == 0) {
+            r.activationTime = now + whiteListTimelock;
+        }
 
         s.addr2recipientId[_recipient] = idRecipient +1;
 
