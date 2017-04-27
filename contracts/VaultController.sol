@@ -295,7 +295,12 @@ contract VaultController is Owned {
 
     /// @notice `onlyOwnerOrParent` Cancels this controller's Vault and all it's
     /// children, emptying them to the `parentVault`
-    function cancelVault() onlyOwnerOrParent initialized returns (bool _finished) {
+    function cancelVault() onlyOwnerOrParent returns (bool _finished) {
+
+        // If ! initialized, just mark it as cancelled and return
+        if (address(primaryVault) == 0) {
+            canceled = true;
+        };
 
         if (canceled) return true; //If it is already canceled, just return.
 
