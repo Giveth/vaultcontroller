@@ -182,6 +182,9 @@ contract VaultController is Owned {
         uint _closingTime
       ) onlyOwner notInitialized notCanceled {
 
+        if (_highestAcceptableBalance < _lowestAcceptableBalance) throw;
+        if (_txnAmountLimit > _dailyAmountLimit) throw;
+
         dailyAmountLimit = _dailyAmountLimit;
         dailyTxnLimit = _dailyTxnLimit;
         txnAmountLimit = _txnAmountLimit;
@@ -300,7 +303,7 @@ contract VaultController is Owned {
         // If ! initialized, just mark it as cancelled and return
         if (address(primaryVault) == 0) {
             canceled = true;
-        };
+        }
 
         if (canceled) return true; //If it is already canceled, just return.
 
