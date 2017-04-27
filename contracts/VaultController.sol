@@ -12,6 +12,7 @@ contract VaultController is Owned {
 
     uint constant  MAX_GENERATIONS = 10;
     uint constant MAX_CHILDS = 100;
+    uint constant GAS_LIMIT = 500000;
 
     /// @dev The `Recipient` is an address that is allowed to receive `baseToken`
     ///  from this controller's Vault after `timeLockExpiration` has passed
@@ -296,11 +297,11 @@ contract VaultController is Owned {
     /// children, emptying them to the `parentVault`
     function cancelVault() onlyOwnerOrParent initialized returns (bool _finished) {
 
-        if (canceled) return; //If it is already canceled, just return.
+        if (canceled) return true; //If it is already canceled, just return.
 
         cancelAllChildVaults();
 
-        if (gas() < 200000) return false;
+        if (gas() < GAS_LIMIT) return false;
 
         uint vaultBalance = primaryVault.getBalance();
 
@@ -328,7 +329,7 @@ contract VaultController is Owned {
     /// @notice `onlyOwner` Automates that cancellation of all childVaults
     function cancelAllChildVaults() internal onlyOwnerOrParent initialized {
         uint i;
-        for (i=0; (i<childVaultControllers.length) && (gas() >=200000); i++) {
+        for (i=0; (i<childVaultControllers.length) && (gas() >= GAS_LIMIT); i++) {
             cancelChildVault(i);
         }
     }

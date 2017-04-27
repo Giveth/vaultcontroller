@@ -90,8 +90,8 @@ describe("Create a full structure of Vaults and cancel at once", () => {
     it("Should add a childs vault structure", async () => {
         for (let i = 1; i <= 9; i += 1) {
             vaultControllers[ i ] = [];
-            for (let j = 0; j < 2; j += 1) {
-//                console.log("Child "+i+"  "+j);
+            for (let j = 0; j < (i === 9 ? 100 : 2); j += 1) {
+                console.log("Child "+i+"  "+j);
                 vaultControllers[ i ][ j ] = await vaultControllers[ i - 1 ][ 0 ].createChildVault({
                     from: owner,
                     name: `Project ${ i } ${ j }`,
@@ -113,11 +113,12 @@ describe("Create a full structure of Vaults and cancel at once", () => {
         assert.equal(st.primaryVault.balance, web3.toWei(600 - 512));
         assert.equal(st.childVaults[ 0 ].primaryVault.balance, web3.toWei(0));
         assert.equal(st.childVaults[ 1 ].primaryVault.balance, web3.toWei(256));
-    }).timeout(60000);
+    }).timeout(2000000);
     it("Should cancel the whole structure", async () => {
         const balanceBefore = await getBalance(web3, parentVault);
         await vaultControllers[ 0 ][ 0 ].cancelVault({
             from: owner,
+            verbose: true,
         });
         const balanceAfter = await getBalance(web3, parentVault);
         assert.equal(balanceAfter.sub(balanceBefore), web3.toWei(600));
