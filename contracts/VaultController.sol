@@ -265,6 +265,7 @@ contract VaultController is Owned {
 
         // Checks to confirm that the limits are not greater than the `parentVault`
         if (_dailyAmountLimit > dailyAmountLimit) throw;
+        if (_dailyTxnLimit > dailyTxnLimit) throw;
         if (_txnAmountLimit > txnAmountLimit) throw;
         if (_whiteListTimelock < whiteListTimelock) throw;
         if (_highestAcceptableBalance > highestAcceptableBalance) throw;
@@ -361,6 +362,7 @@ contract VaultController is Owned {
         VaultController vc = childVaultControllers[_idChildProject];
 
         if (_dailyAmountLimit > dailyAmountLimit) throw;
+        if (_dailyTxnLimit > dailyTxnLimit) throw;
         if (_txnAmountLimit > txnAmountLimit) throw;
         if (_whiteListTimelock < whiteListTimelock) throw;
         if (_highestAcceptableBalance > highestAcceptableBalance) throw;
