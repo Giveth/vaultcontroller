@@ -442,6 +442,12 @@ contract VaultController is Owned {
         if (address(childVault) == 0) throw; // Child project is not initialized
 
         uint vaultBalance = childVault.getBalance();
+
+        if (address(parentVaultController) != 0) {
+            parentVaultController.topUpVault();
+        }
+        sendBackOverflow();
+
         if (vaultBalance < vc.lowestAcceptableBalance()) {
             uint transferAmount = vc.highestAcceptableBalance() - vaultBalance;
             if (primaryVault.getBalance() < transferAmount) {
@@ -456,6 +462,11 @@ contract VaultController is Owned {
                   transferAmount,
                   0
                 );
+
+                if (address(parentVaultController) != 0) {
+                    parentVaultController.topUpVault();
+                }
+
                 TopUpVault(vaultControllerId, transferAmount);
             }
         }
